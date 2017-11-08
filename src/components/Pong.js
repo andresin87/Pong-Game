@@ -9,6 +9,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import CHARS from './chars';
+
 class Vector {
   constructor(x = 0, y = 0) {
     this.x = x;
@@ -93,6 +95,26 @@ class Game {
     };
     callback();
 
+    this.CHAR_PIXEL = 10;
+    this.CHARS = CHARS.map(str => {
+      const canvas = document.createElement('canvas');
+      canvas.height = this.CHAR_PIXEL * 5;
+      canvas.width = this.CHAR_PIXEL * 3;
+      const context = canvas.getContext('2d');
+      context.fillStyle = '#ffffff';
+      str.split('').forEach((fill, i) => {
+        if (fill === '1') {
+          context.fillRect(
+            (i % 3) *  this.CHAR_PIXEL,
+            (i / 3 | 0) * this.CHAR_PIXEL,
+            this.CHAR_PIXEL,
+            this.CHAR_PIXEL,
+          );
+        }
+      });
+      return canvas;
+    });
+
     this.reset();
   }
   collide(player, ball) {
@@ -115,6 +137,30 @@ class Game {
 
     this.drawRect(this.ball);
     this.players.forEach(player => this.drawRect(player));
+
+    this.drawScore();
+  }
+  drawScore() {
+    const align = this.canvas.width / 3;
+    const CHAR_W = this.CHAR_PIXEL * 4;
+    this.players.forEach((player, index) => {
+      const chars = player.score.toString().split('');
+      const offset = (
+          align * (index + 1)
+        )
+        -
+        (CHAR_W * chars.length / 2)
+        +
+        this.CHAR_PIXEL
+        ;
+      chars.forEach((char, pos) => {
+        this.context.drawImage(
+          this.CHARS[char | 0],
+          offset + pos * CHAR_W,
+          20,
+        );
+      });
+    });
   }
   drawRect(rect) {
     // Update the ball
