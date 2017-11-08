@@ -64,8 +64,6 @@ class Game {
 
     // Initialise the ball
     this.ball = new Ball;
-    this.ball.vel.x = 100;
-    this.ball.vel.y = 100;
 
     this.players = [
       new Player,
@@ -86,6 +84,8 @@ class Game {
       requestAnimationFrame(callback);
     };
     callback();
+
+    this.reset();
   }
   collide(player, ball) {
     if (
@@ -115,12 +115,21 @@ class Game {
       rect.size.y,
     );
   }
+  reset() {
+    this.ball.pos.x = this.canvas.width / 2 + this.ball.size.x / 2;
+    this.ball.pos.y = this.canvas.height / 2 + this.ball.size.y / 2;
+    this.ball.vel.x = 100;
+    this.ball.vel.y = 100;
+  }
   update(dt) {
     this.ball.pos.x += this.ball.vel.x * dt;
     this.ball.pos.y += this.ball.vel.y * dt;
 
     if (this.ball.left < 0 || this.ball.right > this.canvas.width) {
-      this.ball.vel.x = -this.ball.vel.x;
+      let playerId = this.ball.vel.x < 0 | 0;
+      this.players[playerId].score += 1;
+      this.reset();
+      // this.ball.vel.x = -this.ball.vel.x;
     }
     if (this.ball.top < 0 || this.ball.bottom > this.canvas.height) {
       this.ball.vel.y = -this.ball.vel.y;
