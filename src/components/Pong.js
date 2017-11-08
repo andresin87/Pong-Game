@@ -116,10 +116,10 @@ class Game {
     );
   }
   reset() {
-    this.ball.pos.x = this.canvas.width / 2 + this.ball.size.x / 2;
-    this.ball.pos.y = this.canvas.height / 2 + this.ball.size.y / 2;
-    this.ball.vel.x = 100;
-    this.ball.vel.y = 100;
+    this.ball.pos.x = this.canvas.width / 2;
+    this.ball.pos.y = this.canvas.height / 2;
+    this.ball.vel.x = 0;
+    this.ball.vel.y = 0;
   }
   update(dt) {
     this.ball.pos.x += this.ball.vel.x * dt;
