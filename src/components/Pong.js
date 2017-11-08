@@ -123,8 +123,8 @@ class Game {
   }
   start() {
     if (this.ball.vel.x === 0 && this.ball.vel.y === 0) {
-      this.ball.vel.x = 300;
-      this.ball.vel.y = 300;
+      this.ball.vel.x = 300 * (Math.random() > .5 ? 1 : -1);
+      this.ball.vel.y = 300 * (Math.random() > .5 ? 2 : 1) * (Math.random() > .5 ? -1 : 1);
     }
   }
   update(dt) {
