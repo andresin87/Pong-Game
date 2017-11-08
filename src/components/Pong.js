@@ -14,6 +14,14 @@ class Vector {
     this.x = x;
     this.y = y;
   }
+  get len() {
+    return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+  }
+  set len(value) {
+    const fact = value / this.len;
+    this.x *= fact;
+    this.y *= fact;
+  }
 }
 
 class Rect {
@@ -125,6 +133,7 @@ class Game {
     if (this.ball.vel.x === 0 && this.ball.vel.y === 0) {
       this.ball.vel.x = 300 * (Math.random() > .5 ? 1 : -1);
       this.ball.vel.y = 300 * (Math.random() > .5 ? 2 : 1) * (Math.random() > .5 ? -1 : 1);
+      this.ball.vel.len = 200;
     }
   }
   update(dt) {
