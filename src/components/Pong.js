@@ -121,6 +121,12 @@ class Game {
     this.ball.vel.x = 0;
     this.ball.vel.y = 0;
   }
+  start() {
+    if (this.ball.vel.x === 0 && this.ball.vel.y === 0) {
+      this.ball.vel.x = 300;
+      this.ball.vel.y = 300;
+    }
+  }
   update(dt) {
     this.ball.pos.x += this.ball.vel.x * dt;
     this.ball.pos.y += this.ball.vel.y * dt;
@@ -151,6 +157,9 @@ class Pong extends React.Component {
 
     this.canvas.addEventListener('mousemove', (/* ev */) => {
       this.Game.players[0].pos.y = event.offsetY;
+    });
+    this.canvas.addEventListener('click', (/* ev */) => {
+      this.Game.start();
     });
   }
   render() {
