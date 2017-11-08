@@ -19,7 +19,8 @@ class Pong extends React.Component {
     this.Game = new Game(this.canvas);
 
     this.canvas.addEventListener('mousemove', (/* ev */) => {
-      this.Game.players[0].pos.y = event.offsetY;
+      const scale = event.offsetY / event.target.getBoundingClientRect().height;
+      this.Game.players[0].pos.y = this.canvas.height * scale;
     });
     this.canvas.addEventListener('click', (/* ev */) => {
       this.Game.start();
