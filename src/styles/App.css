@@ -11,4 +11,14 @@ body {
   justify-content: center;
   align-items: center;
   align-content: center;
+  height: 100vh;
+}
+
+.pong-wrapper canvas {
+  border: 1px solid #ffffff;
+  border-left: none;
+  border-right: none;
+  image-rendering: pixelated;
+  height: 100%;
+  margin: 0 auto;
 }
