@@ -42,50 +42,59 @@ class Ball extends Rect {
   }
 }
 
+class Game {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.context = canvas.getContext('2d');
+
+    // Initialise the ball
+    this.ball = new Ball;
+    ball.vel.x = 100;
+    ball.vel.y = 100;
+
+    let lastTime;
+    const callback = (millis) => {
+      if (lastTime) {
+        this.update((millis - lastTime) / 1000);
+      }
+      lastTime = millis;
+      requestAnimationFrame(callback);
+    };
+    callback();
+  }
+  draw() {
+    // Update Background
+    this.context.fillStyle = '#000000';
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.drawRect(this.ball);
+  }
+  drawRect(rect) {
+    // Update the ball
+    this.context.fillStyle = '#ffffff';
+    this.context.fillRect(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y);
+  }
+  update(dt) => {
+    this.ball.pos.x += this.ball.vel.x * dt;
+    this.ball.pos.y += this.ball.vel.y * dt;
+
+    if (this.ball.left < 0 || this.ball.right > this.canvas.width) {
+      this.ball.vel.x = -this.ball.vel.x;
+    }
+    if (this.ball.top < 0 || this.ball.bottom > this.canvas.height) {
+      this.ball.vel.y = -this.ball.vel.y;
+    }
+
+    this.draw();
+  }
+}
+
 class Pong extends React.Component {
   shouldComponentUpdate() {
     return false;
   }
   componentDidMount() {
-    const canvas = this.canvas;
-    this.context = canvas.getContext('2d');
-
-    const ball = new Ball;
-    ball.vel.x = 100;
-    ball.vel.y = 100;
-
-    let lastTime;
-
-    const callback = (millis) => {
-      if (lastTime) {
-        update((millis - lastTime) / 1000);
-      }
-      lastTime = millis;
-      requestAnimationFrame(callback);
-    };
-
-    const update = (dt) => {
-      ball.pos.x += ball.vel.x * dt;
-      ball.pos.y += ball.vel.y * dt;
-
-      if (ball.left < 0 || ball.right > canvas.width) {
-        ball.vel.x = -ball.vel.x;
-      }
-      if (ball.top < 0 || ball.bottom > canvas.height) {
-        ball.vel.y = -ball.vel.y;
-      }
-
-      // Add Background
-      this.context.fillStyle = '#000000';
-      this.context.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Add the ball
-      this.context.fillStyle = '#ffffff';
-      this.context.fillRect(ball.pos.x, ball.pos.y, ball.size.x, ball.size.y);
-    }
-
-    callback();
-
+    const Game = new Game(this.canvas);
   }
   render() {
     const { width, height } = this.props
