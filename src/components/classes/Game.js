@@ -16,6 +16,9 @@ export default class Game {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
 
+    this.accomulator = 0;
+    this.step = 1/120;
+
     // Initialise the ball
     this.ball = new Ball;
 
@@ -33,6 +36,7 @@ export default class Game {
     const callback = (millis) => {
       if (lastTime) {
         this.update((millis - lastTime) / 1000);
+        this.draw();
       }
       lastTime = millis;
       requestAnimationFrame(callback);
@@ -129,7 +133,7 @@ export default class Game {
       this.ball.vel.len = 200;
     }
   }
-  update(dt) {
+  simulate(dt) {
     this.ball.pos.x += this.ball.vel.x * dt;
     this.ball.pos.y += this.ball.vel.y * dt;
 
@@ -145,7 +149,12 @@ export default class Game {
 
     this.players[1].pos.y = this.ball.pos.y;
     this.players.forEach(player => this.collide(player, this.ball));
-
-    this.draw();
+  }
+  update(dt) {
+    this.accomulator += dt;
+    while(this.accomulator > this.step) {
+      this.simulate(this.step);
+      this.accomulator -= this.step;
+    }
   }
 }
